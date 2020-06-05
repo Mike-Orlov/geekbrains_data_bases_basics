@@ -6,7 +6,7 @@
 DROP FUNCTION IF EXISTS hello;
 DELIMITER //
 CREATE FUNCTION hello ()
-RETURNS VARCHAR(255) DETERMINISTIC
+RETURNS VARCHAR(255) NO SQL
 BEGIN
   DECLARE time_now INT DEFAULT HOUR(NOW());
   DECLARE greetings VARCHAR(255);
@@ -27,9 +27,9 @@ SELECT hello();
 -- Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены. 
 -- При попытке присвоить полям NULL-значение необходимо отменить операцию.
 
-DROP TRIGGER IF EXISTS not_null;
+DROP TRIGGER IF EXISTS not_null_1;
 DELIMITER //
-CREATE TRIGGER not_null BEFORE INSERT ON products
+CREATE TRIGGER not_null_1 BEFORE INSERT ON products
 FOR EACH ROW
 BEGIN
   IF NEW.name IS NULL AND NEW.description IS NULL THEN
@@ -51,8 +51,21 @@ SELECT * FROM products;
 INSERT INTO products (name, description, price)
 VALUES (NULL, NULL, 8000);
 
-DELETE FROM products WHERE id > 7;
-
+DELETE FROM products WHERE i > 7;
+				    
+DROP TRIGGER IF EXISTS not_null_2;
+DELIMITER //
+CREATE TRIGGER not_null_2 BEFORE UPDATE ON products
+FOR EACH ROW
+BEGIN
+  IF NEW.name IS NULL AND NEW.description IS NULL THEN
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INSERT canceled, because name and description are NULLs';
+  ELSEIF NEW.description IS NULL THEN 
+    SET NEW.description = NEW.name; -- Описание делаем как имя, логика базы позволяет. Но наоборот было бы не логично.
+  END IF;
+END//
+DELIMITER ;
+				    
 -- 3. (по желанию) Напишите хранимую функцию для вычисления произвольного числа Фибоначчи. 
 -- Числами Фибоначчи называется последовательность в которой число равно сумме двух предыдущих чисел. 
 -- Вызов функции FIBONACCI(10) должен возвращать число 55.
