@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS passwords (
 DROP TABLE IF EXISTS photos;
 CREATE TABLE IF NOT EXISTS photos (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  object_id INT UNSIGNED NOT NULL,
+  object_id INT UNSIGNED NOT NULL, --object can be a user or a property
   filename VARCHAR(255) NOT NULL,
   size INT NOT NULL,
   photo_type_id INT UNSIGNED NOT NULL,

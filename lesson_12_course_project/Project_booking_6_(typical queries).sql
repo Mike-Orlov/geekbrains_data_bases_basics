@@ -16,9 +16,9 @@ SELECT
   END as age_range,
   COUNT(*) AS count
 FROM reservations 
-  LEFT JOIN profiles ON reservations.user_id = profiles.user_id
-  LEFT JOIN properties ON properties.id = reservations.property_id
-  LEFT JOIN property_types ON property_types.id = properties.property_type_id
+  JOIN profiles ON reservations.user_id = profiles.user_id
+  JOIN properties ON properties.id = reservations.property_id
+  JOIN property_types ON property_types.id = properties.property_type_id
 GROUP BY age_range
 ORDER BY age_range;
 
@@ -28,12 +28,12 @@ SELECT reviews.user_id AS user_id,
   CONCAT(users.first_name,' ',users.last_name) AS name, 
   COUNT(*) as reviews_qty
 FROM reviews
-  LEFT JOIN profiles ON reviews.user_id = profiles.user_id
-  LEFT JOIN users ON profiles.user_id = users.id
+  JOIN profiles ON reviews.user_id = profiles.user_id
+  JOIN users ON profiles.user_id = users.id
 GROUP BY reviews.user_id
 ORDER BY reviews_qty DESC;
 
--- Top 10 properties that have much reservations?
+-- Top 10 properties that have more reservations?
 
 SELECT DISTINCT
   properties.name,

@@ -12,11 +12,5 @@ CREATE INDEX photos_size_idx ON photos(size);
 CREATE INDEX photos_filename_idx ON photos(filename);
 CREATE INDEX photos_object_id_idx ON photos(object_id);
 
-CREATE INDEX reviews_user_id_idx ON reviews(user_id);
-CREATE INDEX reviews_property_id_idx ON reviews(property_id);
-
 CREATE INDEX properties_country_city_idx ON properties(country, city);
 CREATE INDEX properties_name_idx ON properties(name);
-
-CREATE INDEX reservations_user_id_idx ON reservations(user_id);
-CREATE INDEX reservations_property_id_idx ON reservations(property_id);
